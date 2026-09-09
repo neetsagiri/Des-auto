@@ -3,138 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AOV Dimension Breaker - Auto Des Card Đôi</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&family=Teko:wght@700&display=swap" rel="stylesheet">
+  <title>AOV Loading Edit Studio</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Montserrat', sans-serif;
-      background: #090611;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #080410;
       color: #e2e8f0;
-      padding: 15px;
+      padding: 20px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
     h1 {
-      font-family: 'Teko', sans-serif;
-      font-size: 32px;
+      font-size: 22px;
       letter-spacing: 2px;
-      background: linear-gradient(135deg, #e9d5ff, #c084fc, #9333ea);
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #c084fc, #e879f9);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-align: center;
       margin-bottom: 15px;
+      text-align: center;
     }
     .panel {
       width: 100%;
-      max-width: 600px;
-      background: rgba(23, 15, 38, 0.85);
-      border: 1px solid rgba(168, 85, 247, 0.4);
-      border-radius: 16px;
+      max-width: 500px;
+      background: #140b24;
+      border: 1px solid #3b1861;
+      border-radius: 12px;
       padding: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
     }
     .upload-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
-    .upload-btn {
-      background: #1f1430;
-      border: 1.5px dashed #a855f7;
-      border-radius: 10px;
-      padding: 12px 8px;
+    .btn-up {
+      background: #201238;
+      border: 1.5px dashed #8b5cf6;
+      border-radius: 8px;
+      padding: 12px 6px;
       text-align: center;
       cursor: pointer;
-      font-size: 13px;
-      font-weight: bold;
-      color: #d8b4fe;
-    }
-    .upload-btn input { display: none; }
-    .status { font-size: 11px; color: #a855f7; display: block; margin-top: 4px; }
-
-    .input-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    input {
-      width: 100%;
-      padding: 8px 10px;
-      background: #120920;
-      border: 1px solid #6b21a8;
-      border-radius: 6px;
-      color: #fff;
       font-size: 12px;
+      font-weight: bold;
+      color: #c084fc;
     }
-    input:focus { border-color: #c084fc; outline: none; }
-
-    .btn-download {
+    .btn-up input { display: none; }
+    .status { font-size: 11px; color: #a855f7; display: block; margin-top: 4px; }
+    .btn-dl {
       width: 100%;
-      padding: 12px;
+      padding: 13px;
       background: linear-gradient(135deg, #9333ea, #c084fc);
       color: #fff;
       border: none;
       border-radius: 8px;
-      font-weight: 900;
-      cursor: pointer;
+      font-weight: bold;
       font-size: 14px;
-      letter-spacing: 1px;
-      box-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
     }
-    .preview-box {
+    .preview {
       width: 100%;
-      max-width: 420px; /* Khung xem trước dạng điện thoại */
+      max-width: 420px;
       background: #000;
       border-radius: 12px;
       overflow: hidden;
-      border: 2px solid #581c87;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+      border: 1.5px solid #4c1d95;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
     }
-    canvas {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
+    canvas { display: block; width: 100%; height: auto; }
   </style>
 </head>
 <body>
 
-  <h1>DIMENSION BREAKER EDIT STUDIO</h1>
+  <h1>AOV Loading Card Editor</h1>
 
   <div class="panel">
     <div class="upload-row">
-      <label class="upload-btn">
-        <span>ẢNH 1 (TƯỚNG TRÊN / TRÁI)</span>
-        <span id="st1" class="status">Chưa chọn ảnh</span>
+      <label class="btn-up">
+        <span>ẢNH CARD 1 (TRÁI)</span>
+        <span id="st1" class="status">Chưa có ảnh</span>
         <input type="file" id="f1" accept="image/*">
       </label>
-      <label class="upload-btn">
-        <span>ẢNH 2 (TƯỚNG DƯỚI / PHẢI)</span>
-        <span id="st2" class="status">Chưa chọn ảnh</span>
+      <label class="btn-up">
+        <span>ẢNH CARD 2 (PHẢI)</span>
+        <span id="st2" class="status">Chưa có ảnh</span>
         <input type="file" id="f2" accept="image/*">
       </label>
     </div>
-
-    <div class="input-grid">
-      <input type="text" id="skin1" value="Thứ nguyên vệ thần" placeholder="Skin 1">
-      <input type="text" id="skin2" value="Thứ nguyên vệ thần" placeholder="Skin 2">
-      <input type="text" id="hero1" value="Tel'Annas" placeholder="Tên tướng 1">
-      <input type="text" id="hero2" value="Violet" placeholder="Tên tướng 2">
-      <input type="text" id="name1" value="ThuỷThầnTinhVân" placeholder="Ingame 1">
-      <input type="text" id="name2" value="rt4Eunsung." placeholder="Ingame 2">
-    </div>
-
-    <button class="btn-download" id="btnDl">⬇️ TẢI ẢNH FULL HD (9:16)</button>
+    <button class="btn-dl" id="btnDl">⬇️ TẢI ẢNH FULL HD (9:16)</button>
   </div>
 
-  <div class="preview-box">
-    <!-- Khổ chuẩn Story/TikTok 1080 x 1920 -->
+  <div class="preview">
     <canvas id="canvas" width="1080" height="1920"></canvas>
   </div>
 
@@ -151,20 +116,17 @@
     const st2 = document.getElementById('st2');
     const btnDl = document.getElementById('btnDl');
 
-    const inputs = ['skin1', 'skin2', 'hero1', 'hero2', 'name1', 'name2'];
-    inputs.forEach(id => document.getElementById(id).addEventListener('input', render));
+    f1.addEventListener('change', (e) => loadImg(e.target.files[0], 1));
+    f2.addEventListener('change', (e) => loadImg(e.target.files[0], 2));
 
-    f1.addEventListener('change', (e) => load(e.target.files[0], 1));
-    f2.addEventListener('change', (e) => load(e.target.files[0], 2));
-
-    function load(file, idx) {
+    function loadImg(file, idx) {
       if (!file) return;
       const r = new FileReader();
       r.onload = (e) => {
         const im = new Image();
         im.onload = () => {
-          if (idx === 1) { img1 = im; st1.innerText = "✅ Đã nhận ảnh 1"; }
-          else { img2 = im; st2.innerText = "✅ Đã nhận ảnh 2"; }
+          if (idx === 1) { img1 = im; st1.innerText = "✅ Đã nhận"; }
+          else { img2 = im; st2.innerText = "✅ Đã nhận"; }
           render();
         };
         im.src = e.target.result;
@@ -175,232 +137,165 @@
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // 1. VẼ NỀN ANIME TÍM LỚN (TRÊN & DƯỚI)
-      drawAnimeBackground();
-
-      // 2. VẼ CÁC CHỮ CHẠY XIÊN GLITCH PHÔNG NỀN (DIMENSION BREAKER)
-      drawGlitchTextBackground();
-
-      // 3. VẼ CÁC THẺ CARD ẢO NGHIÊNG XẾP LỚP Ở SAU (GHOST/ECHO CARDS)
-      drawBackGhostCards();
-
-      // 4. VẼ 2 THẺ CARD CHÍNH Ở TRUNG TÂM (ĐỐI XỨNG 3D TILT)
-      drawMainPairCards();
-
-      // 5. PHỦ LỚP MÀU ÁNH TÍM ANIME VÀ BỤI SÁNG
-      drawAuraGlitchEffect();
-    }
-
-    function drawAnimeBackground() {
-      ctx.fillStyle = "#0c0618";
+      // Nền đen sâu
+      ctx.fillStyle = "#07030e";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Ảnh góc trên (Phóng to, hơi xoay nhẹ)
-      if (img2 || img1) {
+      if (!img1 && !img2) {
+        ctx.fillStyle = "#a855f7";
+        ctx.font = "bold 28px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("Vui lòng tải 2 ảnh thẻ loading lên", canvas.width / 2, canvas.height / 2);
+        return;
+      }
+
+      // 1. VẼ NỀN ANIME PHÓNG TO TRÊN VÀ DƯỚI (CHUẨN GÓC VÁT NHƯ MẪU)
+      drawBackgroundArt();
+
+      // 2. CHỮ CHẠY XIÊN MỜ NGHỆ THUẬT PHÍA SAU
+      drawSlantedTextOverlay();
+
+      // 3. VẼ DẢI THẺ XẾP LỚP PHÍA SAU (MOTION TRAIL CARDS)
+      drawMotionTrailCards();
+
+      // 4. VẼ 2 THẺ CHÍNH Ở TRUNG TÂM (ĐỐI XỨNG GÓC NGHIÊNG 3D)
+      drawCenterMainCards();
+
+      // 5. HIỆU ỨNG SCANLINES (SỌC MÀN HÌNH ANIME) VÀ TONE MÀU TÍM LẠNH
+      drawScanlinesAndTone();
+    }
+
+    function drawBackgroundArt() {
+      // Ảnh trên (Lấy thẻ 2 hoặc 1)
+      const topImg = img2 || img1;
+      if (topImg) {
         ctx.save();
-        ctx.translate(canvas.width / 2, 250);
-        ctx.rotate(-0.08);
-        ctx.filter = "contrast(1.2) brightness(0.65) saturate(1.4)";
-        const bgImgTop = img2 || img1;
-        ctx.drawImage(bgImgTop, -750, -450, 1500, 900);
+        ctx.translate(canvas.width / 2, 280);
+        ctx.rotate(-0.06);
+        ctx.filter = "contrast(1.25) saturate(1.5) brightness(0.65)";
+        ctx.drawImage(topImg, -800, -500, 1600, 1000);
         ctx.restore();
       }
 
-      // Ảnh góc dưới (Phóng to, xoay nghiêng đối ứng)
-      if (img1 || img2) {
+      // Ảnh dưới (Lấy thẻ 1 hoặc 2)
+      const btmImg = img1 || img2;
+      if (btmImg) {
         ctx.save();
-        ctx.translate(canvas.width / 2, 1680);
-        ctx.rotate(0.06);
-        ctx.filter = "contrast(1.25) brightness(0.7) saturate(1.4)";
-        const bgImgBtm = img1 || img2;
-        ctx.drawImage(bgImgBtm, -750, -450, 1500, 900);
+        ctx.translate(canvas.width / 2, 1640);
+        ctx.rotate(0.05);
+        ctx.filter = "contrast(1.3) saturate(1.5) brightness(0.7)";
+        ctx.drawImage(btmImg, -800, -500, 1600, 1000);
         ctx.restore();
       }
 
-      // Lớp phủ Gradient Tím Đen giữa màn hình
-      const midGrad = ctx.createLinearGradient(0, 450, 0, 1450);
-      midGrad.addColorStop(0, "rgba(12, 6, 24, 0.4)");
-      midGrad.addColorStop(0.5, "rgba(35, 10, 65, 0.85)");
-      midGrad.addColorStop(1, "rgba(12, 6, 24, 0.4)");
-      ctx.fillStyle = midGrad;
+      // Lớp gradient tím sẫm hòa trộn ở giữa màn hình
+      const grad = ctx.createLinearGradient(0, 350, 0, 1550);
+      grad.addColorStop(0, "rgba(8, 4, 16, 0.35)");
+      grad.addColorStop(0.3, "rgba(22, 7, 45, 0.85)");
+      grad.addColorStop(0.7, "rgba(22, 7, 45, 0.85)");
+      grad.addColorStop(1, "rgba(8, 4, 16, 0.35)");
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    function drawGlitchTextBackground() {
+    function drawSlantedTextOverlay() {
       ctx.save();
-      ctx.rotate(-0.35);
-      ctx.font = "italic 900 65px 'Montserrat'";
-      ctx.fillStyle = "rgba(192, 132, 252, 0.15)";
-
-      for (let y = -400; y < 2400; y += 180) {
-        ctx.fillText("DIMENSION BREAKER • THỨ NGUYÊN VỆ THẦN • AOV", -500, y);
+      ctx.rotate(-0.32);
+      ctx.font = "italic 900 70px sans-serif";
+      ctx.fillStyle = "rgba(192, 132, 252, 0.08)";
+      for (let y = -400; y < 2500; y += 170) {
+        ctx.fillText("DIMENSION BREAKER • THỨ NGUYÊN VỆ THẦN • AOV", -600, y);
       }
       ctx.restore();
     }
 
-    function drawBackGhostCards() {
-      // Các thẻ mờ tạo chiều sâu chuyển động phía sau thẻ chính
-      drawCardShape(-0.25, 300, 720, 360, 640, img1, 0.3, true);
-      drawCardShape(0.28, 800, 1050, 360, 640, img2, 0.35, true);
-      drawCardShape(-0.15, 680, 620, 360, 640, img2, 0.25, true);
-    }
-
-    function drawMainPairCards() {
-      const cardW = 440;
-      const cardH = 760;
-
-      // THẺ CHÍNH PHẢI (VIOLET / THÀNH VIÊN 2) - NẰM LỚP DƯỚI MỘT CHÚT
-      drawCardShape(
-        0.18, 680, 880, cardW, cardH, img2, 1.0, false,
-        document.getElementById('skin2').value,
-        document.getElementById('hero2').value,
-        document.getElementById('name2').value,
-        "#d8b4fe"
-      );
-
-      // THẺ CHÍNH TRÁI (TEL'ANNAS / THÀNH VIÊN 1) - ĐÈ LÊN TRÊN
-      drawCardShape(
-        -0.16, 400, 960, cardW, cardH, img1, 1.0, false,
-        document.getElementById('skin1').value,
-        document.getElementById('hero1').value,
-        document.getElementById('name1').value,
-        "#c084fc"
-      );
-    }
-
-    // HÀM VẼ KHUNG THẺ CHUẨN LIÊN QUÂN MOBILE
-    function drawCardShape(rot, cx, cy, w, h, img, alpha, isGhost, skinText, heroText, ingameText, glowCol) {
+    // Vẽ thẻ thuần túy (Không chèn chữ nhân tạo vào nữa)
+    function drawRawCard(img, x, y, w, h, angle, shadowBlur = 35, alpha = 1.0) {
+      if (!img) return;
       ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(rot);
+      ctx.translate(x, y);
+      ctx.rotate(angle);
       ctx.globalAlpha = alpha;
 
-      // Bóng đổ 3D sâu
-      ctx.shadowColor = glowCol || "rgba(0,0,0,0.9)";
-      ctx.shadowBlur = isGhost ? 15 : 45;
-      ctx.shadowOffsetX = isGhost ? 5 : 12;
-      ctx.shadowOffsetY = isGhost ? 5 : 20;
+      // Bóng đổ xiên tạo độ sâu 3D
+      ctx.shadowColor = "rgba(147, 51, 234, 0.45)";
+      ctx.shadowBlur = shadowBlur;
+      ctx.shadowOffsetX = 12;
+      ctx.shadowOffsetY = 24;
 
-      // 1. Viền ngoài thẻ mạ kim loại bạc - tím
-      ctx.strokeStyle = "#e9d5ff";
-      ctx.lineWidth = 6;
+      // Bo viền phát sáng nhẹ quanh thẻ
+      ctx.strokeStyle = "rgba(233, 213, 255, 0.85)";
+      ctx.lineWidth = 3;
       ctx.strokeRect(-w/2, -h/2, w, h);
 
-      // Viền kép neon phụ
-      ctx.strokeStyle = "#a855f7";
-      ctx.lineWidth = 3;
-      ctx.strokeRect(-w/2 + 6, -h/2 + 6, w - 12, h - 12);
-
-      // 2. Vẽ hình ảnh bên trong
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(-w/2 + 6, -h/2 + 6, w - 12, h - 12);
-      ctx.clip();
-
-      if (img) {
-        // Tỉ lệ cover vừa khít thẻ
-        const ratio = Math.max((w - 12) / img.width, (h - 12) / img.height);
-        const sx = ((w - 12) - img.width * ratio) / 2;
-        const sy = ((h - 12) - img.height * ratio) / 2;
-        ctx.drawImage(img, 0, 0, img.width, img.height,
-                      -w/2 + 6 + sx, -h/2 + 6 + sy, img.width * ratio, img.height * ratio);
-      } else {
-        ctx.fillStyle = "#1e1133";
-        ctx.fillRect(-w/2, -h/2, w, h);
-        ctx.fillStyle = "#a855f7";
-        ctx.font = "bold 26px Montserrat";
-        ctx.textAlign = "center";
-        ctx.fillText("CHỌN ẢNH", 0, 0);
-      }
-
-      // Lớp gradient tối bên dưới để đọc chữ UI Game
-      if (!isGhost) {
-        const cardShade = ctx.createLinearGradient(0, h/2 - 320, 0, h/2);
-        cardShade.addColorStop(0, "rgba(0,0,0,0)");
-        cardShade.addColorStop(0.5, "rgba(10, 4, 20, 0.7)");
-        cardShade.addColorStop(1, "rgba(10, 4, 20, 0.95)");
-        ctx.fillStyle = cardShade;
-        ctx.fillRect(-w/2, h/2 - 320, w, 320);
-      }
-
-      ctx.restore();
-
-      // NẾU LÀ THẺ CHÍNH -> VẼ CÁC HUY HIỆU & THÔNG SỐ UI GAME
-      if (!isGhost) {
-        // Vương miện / Badge đỉnh thẻ
-        ctx.fillStyle = "#ffd700";
-        ctx.shadowColor = "#f59e0b";
-        ctx.shadowBlur = 15;
-        ctx.beginPath();
-        ctx.arc(0, -h/2 + 10, 18, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "#fff";
-        ctx.font = "bold 14px Montserrat";
-        ctx.textAlign = "center";
-        ctx.fillText("SSS", 0, -h/2 + 15);
-
-        // Logo Thần Vệ / Tag Skin
-        ctx.fillStyle = "rgba(233, 213, 255, 0.95)";
-        ctx.font = "italic 900 16px 'Montserrat'";
-        ctx.shadowColor = "#9333ea";
-        ctx.shadowBlur = 10;
-        ctx.fillText("DIMENSION BREAKER", 0, h/2 - 185);
-
-        // Tên Skin
-        ctx.fillStyle = "#f3e8ff";
-        ctx.font = "italic 600 21px 'Montserrat'";
-        ctx.fillText(skinText || "Thứ nguyên vệ thần", 0, h/2 - 150);
-
-        // Tên Tướng
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "900 28px 'Montserrat'";
-        ctx.shadowColor = "#000";
-        ctx.shadowBlur = 8;
-        ctx.fillText(heroText || "Tên Tướng", 0, h/2 - 110);
-
-        // Dải Ingame Player
-        ctx.fillStyle = "#d8b4fe";
-        ctx.font = "bold 23px 'Montserrat'";
-        ctx.fillText(ingameText || "Tên Ingame", 0, h/2 - 65);
-
-        // Huy hiệu Thông Thạo S (Cấp 15) ở đáy thẻ
-        ctx.fillStyle = "#7e22ce";
-        ctx.strokeStyle = "#e9d5ff";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(0, h/2 - 20, 18, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 13px Montserrat";
-        ctx.fillText("15", 0, h/2 - 15);
-      }
+      // Vẽ hình ảnh thật của thẻ loading
+      ctx.drawImage(img, -w/2, -h/2, w, h);
 
       ctx.restore();
     }
 
-    function drawAuraGlitchEffect() {
-      ctx.save();
-      // Ánh sáng tím bao trùm (Vignette)
-      const glow = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 400, canvas.width/2, canvas.height/2, 1100);
-      glow.addColorStop(0, "rgba(147, 51, 234, 0.0)");
-      glow.addColorStop(1, "rgba(8, 3, 15, 0.75)");
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    function drawMotionTrailCards() {
+      const w = 450;
+      const h = 780;
 
-      // Các tia sáng lấp lánh chéo
+      // Dải thẻ phía sau góc bên phải (tạo cảm giác quạt thẻ như mẫu)
+      if (img2) {
+        drawRawCard(img2, 760, 930, w, h, 0.32, 15, 0.35);
+        drawRawCard(img2, 720, 890, w, h, 0.26, 20, 0.55);
+      }
+
+      // Dải thẻ phía sau góc bên trái
+      if (img1) {
+        drawRawCard(img1, 330, 990, w, h, -0.26, 15, 0.35);
+        drawRawCard(img1, 370, 950, w, h, -0.20, 20, 0.55);
+      }
+    }
+
+    function drawCenterMainCards() {
+      const cardW = 470;
+      const cardH = 810;
+
+      // THẺ 2 (BÊN PHẢI - NẰM LỚP DƯỚI)
+      if (img2) {
+        drawRawCard(img2, 680, 860, cardW, cardH, 0.16, 45, 1.0);
+      }
+
+      // THẺ 1 (BÊN TRÁI - ĐÈ LÊN TRÊN NỔI BẬT NHẤT)
+      if (img1) {
+        drawRawCard(img1, 410, 950, cardW, cardH, -0.14, 55, 1.0);
+      }
+    }
+
+    function drawScanlinesAndTone() {
+      // 1. Phủ sọc Scanlines dạng màn hình tivi anime cổ điển
+      ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+      for (let y = 0; y < canvas.height; y += 5) {
+        ctx.fillRect(0, y, canvas.width, 2);
+      }
+
+      // 2. Vệt sáng cắt chéo (Lens flare slash)
+      ctx.save();
       ctx.strokeStyle = "rgba(233, 213, 255, 0.35)";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 3;
+      ctx.shadowColor = "#c084fc";
+      ctx.shadowBlur = 20;
       ctx.beginPath();
-      ctx.moveTo(100, 1500);
-      ctx.lineTo(950, 1620);
+      ctx.moveTo(80, 1420);
+      ctx.lineTo(1000, 1540);
       ctx.stroke();
       ctx.restore();
+
+      // 3. Phủ gradient tối 4 mép cạnh (Vignette điện ảnh)
+      const vig = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 450, canvas.width/2, canvas.height/2, 1150);
+      vig.addColorStop(0, "rgba(0,0,0,0)");
+      vig.addColorStop(1, "rgba(5, 2, 10, 0.85)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     btnDl.addEventListener('click', () => {
       const a = document.createElement('a');
-      a.download = `AOV-DimensionBreaker-${Date.now()}.png`;
+      a.download = `AOV-Loading-Edit-${Date.now()}.png`;
       a.href = canvas.toDataURL('image/png', 1.0);
       a.click();
     });
