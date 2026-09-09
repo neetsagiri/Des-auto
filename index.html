@@ -3,69 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AOV Loading Edit Studio</title>
+  <title>AOV Dimension Breaker Master Editor</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #080410;
-      color: #e2e8f0;
-      padding: 20px 10px;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #05020a;
+      color: #f1f5f9;
+      padding: 14px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
     h1 {
-      font-size: 22px;
+      font-size: 20px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      background: linear-gradient(135deg, #c084fc, #e879f9);
+      background: linear-gradient(135deg, #e9d5ff, #f472b6, #c084fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       text-align: center;
+      font-weight: 900;
     }
     .panel {
       width: 100%;
-      max-width: 500px;
-      background: #140b24;
-      border: 1px solid #3b1861;
+      max-width: 480px;
+      background: rgba(19, 10, 33, 0.9);
+      border: 1px solid rgba(192, 132, 252, 0.4);
       border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.9);
     }
     .upload-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .btn-up {
-      background: #201238;
-      border: 1.5px dashed #8b5cf6;
+      background: #190c2e;
+      border: 1.5px dashed #a855f7;
       border-radius: 8px;
       padding: 12px 6px;
       text-align: center;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
-      color: #c084fc;
+      color: #e9d5ff;
+      display: block;
+      transition: 0.2s;
     }
+    .btn-up:hover { border-color: #f472b6; }
     .btn-up input { display: none; }
-    .status { font-size: 11px; color: #a855f7; display: block; margin-top: 4px; }
+    .status { font-size: 11px; color: #f472b6; display: block; margin-top: 4px; }
+
+    /* Thanh chỉnh độ nhạy xóa nền */
+    .slider-box {
+      background: rgba(30, 14, 52, 0.7);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+    .slider-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #d8b4fe;
+      margin-bottom: 4px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: #d946ef;
+      cursor: pointer;
+    }
+
     .btn-dl {
       width: 100%;
       padding: 13px;
-      background: linear-gradient(135deg, #9333ea, #c084fc);
+      background: linear-gradient(135deg, #c026d3, #9333ea, #6366f1);
       color: #fff;
       border: none;
       border-radius: 8px;
-      font-weight: bold;
-      font-size: 14px;
+      font-weight: 900;
+      font-size: 13px;
       cursor: pointer;
-      box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+      box-shadow: 0 0 20px rgba(192, 38, 211, 0.5);
+      letter-spacing: 1px;
     }
     .preview {
       width: 100%;
@@ -73,30 +99,39 @@
       background: #000;
       border-radius: 12px;
       overflow: hidden;
-      border: 1.5px solid #4c1d95;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+      border: 1.5px solid #6b21a8;
+      box-shadow: 0 15px 45px rgba(0,0,0,0.95);
     }
     canvas { display: block; width: 100%; height: auto; }
   </style>
 </head>
 <body>
 
-  <h1>AOV Loading Card Editor</h1>
+  <h1>AOV DIMENSION MASTER EDIT</h1>
 
   <div class="panel">
     <div class="upload-row">
       <label class="btn-up">
-        <span>ẢNH CARD 1 (TRÁI)</span>
+        <span>ẢNH 1 (TRÁI - ĐÈ TRÊN)</span>
         <span id="st1" class="status">Chưa có ảnh</span>
         <input type="file" id="f1" accept="image/*">
       </label>
       <label class="btn-up">
-        <span>ẢNH CARD 2 (PHẢI)</span>
+        <span>ẢNH 2 (PHẢI - NẰM DƯỚI)</span>
         <span id="st2" class="status">Chưa có ảnh</span>
         <input type="file" id="f2" accept="image/*">
       </label>
     </div>
-    <button class="btn-dl" id="btnDl">⬇️ TẢI ẢNH FULL HD (9:16)</button>
+
+    <div class="slider-box">
+      <div class="slider-row">
+        <span>🧹 Độ nhạy tự động xóa nền thừa:</span>
+        <strong id="tolTxt">35</strong>
+      </div>
+      <input type="range" id="tolSlider" min="10" max="80" value="35">
+    </div>
+
+    <button class="btn-dl" id="btnDl">⬇️ TẢI ẢNH CHUẨN MẪU (FULL HD 9:16)</button>
   </div>
 
   <div class="preview">
@@ -107,26 +142,43 @@
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
-    let img1 = null;
-    let img2 = null;
+    let rawImg1 = null, rawImg2 = null;
+    let cleanImg1 = null, cleanImg2 = null;
 
     const f1 = document.getElementById('f1');
     const f2 = document.getElementById('f2');
     const st1 = document.getElementById('st1');
     const st2 = document.getElementById('st2');
+    const tolSlider = document.getElementById('tolSlider');
+    const tolTxt = document.getElementById('tolTxt');
     const btnDl = document.getElementById('btnDl');
 
-    f1.addEventListener('change', (e) => loadImg(e.target.files[0], 1));
-    f2.addEventListener('change', (e) => loadImg(e.target.files[0], 2));
+    tolSlider.addEventListener('input', (e) => {
+      tolTxt.innerText = e.target.value;
+      if (rawImg1) cleanImg1 = removeBorderBackground(rawImg1, parseInt(e.target.value));
+      if (rawImg2) cleanImg2 = removeBorderBackground(rawImg2, parseInt(e.target.value));
+      render();
+    });
 
-    function loadImg(file, idx) {
+    f1.addEventListener('change', (e) => loadAndClean(e.target.files[0], 1));
+    f2.addEventListener('change', (e) => loadAndClean(e.target.files[0], 2));
+
+    function loadAndClean(file, idx) {
       if (!file) return;
       const r = new FileReader();
       r.onload = (e) => {
         const im = new Image();
         im.onload = () => {
-          if (idx === 1) { img1 = im; st1.innerText = "✅ Đã nhận"; }
-          else { img2 = im; st2.innerText = "✅ Đã nhận"; }
+          const tol = parseInt(tolSlider.value);
+          if (idx === 1) {
+            rawImg1 = im;
+            cleanImg1 = removeBorderBackground(im, tol);
+            st1.innerText = "✅ Đã xóa sạch nền";
+          } else {
+            rawImg2 = im;
+            cleanImg2 = removeBorderBackground(im, tol);
+            st2.innerText = "✅ Đã xóa sạch nền";
+          }
           render();
         };
         im.src = e.target.result;
@@ -134,168 +186,242 @@
       r.readAsDataURL(file);
     }
 
+    // THUẬT TOÁN XÓA NỀN ĐIỂM THỪA 4 GÓC TỰ ĐỘNG (FLOOD-FILL TRANSPARENT)
+    function removeBorderBackground(sourceImg, tol) {
+      const off = document.createElement('canvas');
+      off.width = sourceImg.width;
+      off.height = sourceImg.height;
+      const oCtx = off.getContext('2d');
+      oCtx.drawImage(sourceImg, 0, 0);
+
+      const imgData = oCtx.getImageData(0, 0, off.width, off.height);
+      const d = imgData.data;
+      const w = off.width;
+      const h = off.height;
+      const visited = new Uint8Array(w * h);
+
+      // Điểm mồi quét từ 4 góc và viền biên bên ngoài
+      const seeds = [
+        [0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1],
+        [Math.floor(w / 2), 0], [0, Math.floor(h / 2)], [w - 1, Math.floor(h / 2)]
+      ];
+
+      function diff(idx, r, g, b) {
+        return Math.sqrt(
+          Math.pow(d[idx] - r, 2) +
+          Math.pow(d[idx + 1] - g, 2) +
+          Math.pow(d[idx + 2] - b, 2)
+        );
+      }
+
+      seeds.forEach(([sx, sy]) => {
+        const start = (sy * w + sx) * 4;
+        const sr = d[start], sg = d[start + 1], sb = d[start + 2];
+        const queue = [[sx, sy]];
+
+        while (queue.length > 0) {
+          const [cx, cy] = queue.pop();
+          const pIdx = (cy * w + cx) * 4;
+          const vIdx = cy * w + cx;
+
+          if (visited[vIdx]) continue;
+          visited[vIdx] = 1;
+
+          if (diff(pIdx, sr, sg, sb) <= tol) {
+            d[pIdx + 3] = 0; // Biến thành trong suốt 100%
+
+            if (cx > 0 && !visited[vIdx - 1]) queue.push([cx - 1, cy]);
+            if (cx < w - 1 && !visited[vIdx + 1]) queue.push([cx + 1, cy]);
+            if (cy > 0 && !visited[vIdx - w]) queue.push([cx, cy - 1]);
+            if (cy < h - 1 && !visited[vIdx + w]) queue.push([cx, cy + 1]);
+          }
+        }
+      });
+
+      oCtx.putImageData(imgData, 0, 0);
+      return off;
+    }
+
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Nền đen sâu
-      ctx.fillStyle = "#07030e";
+      ctx.fillStyle = "#06020c";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      if (!img1 && !img2) {
-        ctx.fillStyle = "#a855f7";
-        ctx.font = "bold 28px sans-serif";
+      if (!cleanImg1 && !cleanImg2) {
+        ctx.fillStyle = "#c084fc";
+        ctx.font = "bold 26px sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText("Vui lòng tải 2 ảnh thẻ loading lên", canvas.width / 2, canvas.height / 2);
+        ctx.fillText("Vui lòng tải 2 ảnh thẻ lên để tạo", canvas.width / 2, canvas.height / 2);
         return;
       }
 
-      // 1. VẼ NỀN ANIME PHÓNG TO TRÊN VÀ DƯỚI (CHUẨN GÓC VÁT NHƯ MẪU)
-      drawBackgroundArt();
+      // 1. NỀN ANIME TƯƠNG PHẢN CAO TRÊN VÀ DƯỚI
+      drawAnimeBg();
 
-      // 2. CHỮ CHẠY XIÊN MỜ NGHỆ THUẬT PHÍA SAU
-      drawSlantedTextOverlay();
+      // 2. CHỮ THỨ NGUYÊN VỆ THẦN XIÊN MỜ
+      drawSlantedText();
 
-      // 3. VẼ DẢI THẺ XẾP LỚP PHÍA SAU (MOTION TRAIL CARDS)
-      drawMotionTrailCards();
+      // 3. VỆT THẺ TRƯỢT 3D (ĐÃ XÓA NỀN TRONG SUỐT)
+      drawLayeredEchoCards();
 
-      // 4. VẼ 2 THẺ CHÍNH Ở TRUNG TÂM (ĐỐI XỨNG GÓC NGHIÊNG 3D)
-      drawCenterMainCards();
+      // 4. HAI THẺ CHÍNH ĐỐI XỨNG PHÁT QUANG
+      drawMainPair();
 
-      // 5. HIỆU ỨNG SCANLINES (SỌC MÀN HÌNH ANIME) VÀ TONE MÀU TÍM LẠNH
-      drawScanlinesAndTone();
+      // 5. TIA CHÉM LASER & SCANLINES & VIGNETTE
+      drawFXOverlays();
     }
 
-    function drawBackgroundArt() {
-      // Ảnh trên (Lấy thẻ 2 hoặc 1)
-      const topImg = img2 || img1;
+    function drawAnimeBg() {
+      const topImg = rawImg2 || rawImg1;
       if (topImg) {
         ctx.save();
-        ctx.translate(canvas.width / 2, 280);
-        ctx.rotate(-0.06);
-        ctx.filter = "contrast(1.25) saturate(1.5) brightness(0.65)";
-        ctx.drawImage(topImg, -800, -500, 1600, 1000);
+        ctx.translate(canvas.width / 2, 260);
+        ctx.rotate(-0.05);
+        ctx.filter = "contrast(1.35) saturate(1.7) brightness(0.85)";
+        ctx.drawImage(topImg, -850, -500, 1700, 1000);
         ctx.restore();
       }
 
-      // Ảnh dưới (Lấy thẻ 1 hoặc 2)
-      const btmImg = img1 || img2;
+      const btmImg = rawImg1 || rawImg2;
       if (btmImg) {
         ctx.save();
-        ctx.translate(canvas.width / 2, 1640);
-        ctx.rotate(0.05);
-        ctx.filter = "contrast(1.3) saturate(1.5) brightness(0.7)";
-        ctx.drawImage(btmImg, -800, -500, 1600, 1000);
+        ctx.translate(canvas.width / 2, 1660);
+        ctx.rotate(0.06);
+        ctx.filter = "contrast(1.4) saturate(1.7) brightness(0.9)";
+        ctx.drawImage(btmImg, -850, -500, 1700, 1000);
         ctx.restore();
       }
 
-      // Lớp gradient tím sẫm hòa trộn ở giữa màn hình
-      const grad = ctx.createLinearGradient(0, 350, 0, 1550);
-      grad.addColorStop(0, "rgba(8, 4, 16, 0.35)");
-      grad.addColorStop(0.3, "rgba(22, 7, 45, 0.85)");
-      grad.addColorStop(0.7, "rgba(22, 7, 45, 0.85)");
-      grad.addColorStop(1, "rgba(8, 4, 16, 0.35)");
+      const grad = ctx.createLinearGradient(0, 360, 0, 1560);
+      grad.addColorStop(0, "rgba(6, 2, 12, 0.4)");
+      grad.addColorStop(0.35, "rgba(42, 12, 75, 0.85)");
+      grad.addColorStop(0.65, "rgba(42, 12, 75, 0.85)");
+      grad.addColorStop(1, "rgba(6, 2, 12, 0.4)");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    function drawSlantedTextOverlay() {
+    function drawSlantedText() {
       ctx.save();
       ctx.rotate(-0.32);
-      ctx.font = "italic 900 70px sans-serif";
-      ctx.fillStyle = "rgba(192, 132, 252, 0.08)";
-      for (let y = -400; y < 2500; y += 170) {
+      ctx.font = "italic 900 68px sans-serif";
+      ctx.fillStyle = "rgba(233, 213, 255, 0.09)";
+      for (let y = -400; y < 2500; y += 150) {
         ctx.fillText("DIMENSION BREAKER • THỨ NGUYÊN VỆ THẦN • AOV", -600, y);
       }
       ctx.restore();
     }
 
-    // Vẽ thẻ thuần túy (Không chèn chữ nhân tạo vào nữa)
-    function drawRawCard(img, x, y, w, h, angle, shadowBlur = 35, alpha = 1.0) {
-      if (!img) return;
+    function renderCard(imgCanvas, x, y, w, h, angle, alpha = 1.0, isMain = false) {
+      if (!imgCanvas) return;
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(angle);
       ctx.globalAlpha = alpha;
 
-      // Bóng đổ xiên tạo độ sâu 3D
-      ctx.shadowColor = "rgba(147, 51, 234, 0.45)";
-      ctx.shadowBlur = shadowBlur;
-      ctx.shadowOffsetX = 12;
-      ctx.shadowOffsetY = 24;
+      if (isMain) {
+        ctx.shadowColor = "rgba(10, 0, 20, 0.95)";
+        ctx.shadowBlur = 45;
+        ctx.shadowOffsetX = 18;
+        ctx.shadowOffsetY = 30;
+      } else {
+        ctx.shadowColor = "rgba(147, 51, 234, 0.6)";
+        ctx.shadowBlur = 20;
+        ctx.shadowOffsetX = 8;
+        ctx.shadowOffsetY = 14;
+      }
 
-      // Bo viền phát sáng nhẹ quanh thẻ
-      ctx.strokeStyle = "rgba(233, 213, 255, 0.85)";
-      ctx.lineWidth = 3;
-      ctx.strokeRect(-w/2, -h/2, w, h);
-
-      // Vẽ hình ảnh thật của thẻ loading
-      ctx.drawImage(img, -w/2, -h/2, w, h);
+      // Vẽ hình ảnh đã được khử sạch nền thừa
+      ctx.drawImage(imgCanvas, -w/2, -h/2, w, h);
 
       ctx.restore();
     }
 
-    function drawMotionTrailCards() {
+    function drawLayeredEchoCards() {
       const w = 450;
       const h = 780;
 
-      // Dải thẻ phía sau góc bên phải (tạo cảm giác quạt thẻ như mẫu)
-      if (img2) {
-        drawRawCard(img2, 760, 930, w, h, 0.32, 15, 0.35);
-        drawRawCard(img2, 720, 890, w, h, 0.26, 20, 0.55);
+      if (cleanImg2) {
+        renderCard(cleanImg2, 790, 840, w, h, 0.28, 0.35);
+        renderCard(cleanImg2, 740, 820, w, h, 0.24, 0.6);
       }
 
-      // Dải thẻ phía sau góc bên trái
-      if (img1) {
-        drawRawCard(img1, 330, 990, w, h, -0.26, 15, 0.35);
-        drawRawCard(img1, 370, 950, w, h, -0.20, 20, 0.55);
+      if (cleanImg1) {
+        renderCard(cleanImg1, 290, 840, w, h, -0.26, 0.35);
+        renderCard(cleanImg1, 340, 860, w, h, -0.22, 0.6);
       }
     }
 
-    function drawCenterMainCards() {
-      const cardW = 470;
-      const cardH = 810;
+    function drawMainPair() {
+      const cardW = 475;
+      const cardH = 825;
 
-      // THẺ 2 (BÊN PHẢI - NẰM LỚP DƯỚI)
-      if (img2) {
-        drawRawCard(img2, 680, 860, cardW, cardH, 0.16, 45, 1.0);
+      if (cleanImg2) {
+        renderCard(cleanImg2, 690, 820, cardW, cardH, 0.17, 1.0, true);
       }
 
-      // THẺ 1 (BÊN TRÁI - ĐÈ LÊN TRÊN NỔI BẬT NHẤT)
-      if (img1) {
-        drawRawCard(img1, 410, 950, cardW, cardH, -0.14, 55, 1.0);
+      if (cleanImg1) {
+        renderCard(cleanImg1, 410, 930, cardW, cardH, -0.15, 1.0, true);
       }
     }
 
-    function drawScanlinesAndTone() {
-      // 1. Phủ sọc Scanlines dạng màn hình tivi anime cổ điển
-      ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
-      for (let y = 0; y < canvas.height; y += 5) {
-        ctx.fillRect(0, y, canvas.width, 2);
-      }
-
-      // 2. Vệt sáng cắt chéo (Lens flare slash)
+    function drawFXOverlays() {
+      // Tia chém Laser
       ctx.save();
-      ctx.strokeStyle = "rgba(233, 213, 255, 0.35)";
-      ctx.lineWidth = 3;
-      ctx.shadowColor = "#c084fc";
-      ctx.shadowBlur = 20;
       ctx.beginPath();
-      ctx.moveTo(80, 1420);
-      ctx.lineTo(1000, 1540);
+      ctx.moveTo(-50, 1550);
+      ctx.lineTo(1150, 1380);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.lineWidth = 4;
+      ctx.shadowColor = "#f472b6";
+      ctx.shadowBlur = 25;
+      ctx.stroke();
+
+      ctx.lineWidth = 14;
+      ctx.strokeStyle = "rgba(192, 132, 252, 0.35)";
       ctx.stroke();
       ctx.restore();
 
-      // 3. Phủ gradient tối 4 mép cạnh (Vignette điện ảnh)
+      // Đốm lóa sáng đỉnh thẻ
+      drawGlint(360, 540);
+      drawGlint(720, 480);
+
+      // Scanlines
+      ctx.fillStyle = "rgba(0, 0, 0, 0.12)";
+      for (let y = 0; y < canvas.height; y += 4) {
+        ctx.fillRect(0, y, canvas.width, 1.5);
+      }
+
+      // Vignette
       const vig = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 450, canvas.width/2, canvas.height/2, 1150);
       vig.addColorStop(0, "rgba(0,0,0,0)");
-      vig.addColorStop(1, "rgba(5, 2, 10, 0.85)");
+      vig.addColorStop(1, "rgba(5, 1, 10, 0.85)");
       ctx.fillStyle = vig;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
+    function drawGlint(x, y) {
+      ctx.save();
+      ctx.shadowColor = "#ffffff";
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x - 22, y); ctx.lineTo(x + 22, y);
+      ctx.moveTo(x, y - 22); ctx.lineTo(x, y + 22);
+      ctx.stroke();
+      ctx.restore();
+    }
+
     btnDl.addEventListener('click', () => {
       const a = document.createElement('a');
-      a.download = `AOV-Loading-Edit-${Date.now()}.png`;
+      a.download = `AOV-DimensionBreaker-${Date.now()}.png`;
       a.href = canvas.toDataURL('image/png', 1.0);
       a.click();
     });
