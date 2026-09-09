@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Des Liên Quân - Cặp Đôi Tình Yêu</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top, #23112a 0%, #0d0711 100%);
+      color: #fce7f3;
+      padding: 30px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      color: #ff69b4;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+      text-align: center;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(36, 17, 43, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid #57205e;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 10px 40px rgba(255, 105, 180, 0.15);
+    }
+    .upload-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .upload-box {
+      background: rgba(22, 10, 27, 0.6);
+      border: 2px dashed #a855f7;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .upload-box:hover {
+      border-color: #ff69b4;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    }
+    .upload-box input { display: none; }
+    .upload-box label { cursor: pointer; display: block; font-weight: bold; color: #f472b6; font-size: 15px; }
+    .status-text { font-size: 13px; color: #f9a8d4; margin-top: 8px; }
+
+    .options-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    select, button {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      border: none;
+      outline: none;
+    }
+    select {
+      background: #3b1446;
+      color: #fdf2f8;
+      border: 1px solid #7c2d8c;
+    }
+    button.btn-download {
+      background: linear-gradient(135deg, #ff69b4, #ec4899, #a855f7);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+      transition: 0.2s;
+    }
+    button.btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(236, 72, 153, 0.6); }
+
+    .canvas-wrapper {
+      width: 100%;
+      text-align: center;
+      border-radius: 12px;
+      background: #000;
+      padding: 10px;
+      overflow: hidden;
+    }
+    canvas {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💖 Auto Des Liên Quân - Cặp Đôi Tình Yêu 💖</h1>
+
+  <div class="container">
+    <div class="upload-grid">
+      <div class="upload-box" onclick="document.getElementById('fileImg1').click()">
+        <label>🤴 Ảnh Bạn Nam / Tướng Nam (hoặc Nền)</label>
+        <span id="label1" class="status-text">Chưa chọn ảnh</span>
+        <input type="file" id="fileImg1" accept="image/*">
+      </div>
+
+      <div class="upload-box" onclick="document.getElementById('fileImg2').click()">
+        <label>👸 Ảnh Bạn Nữ / Tướng Nữ</label>
+        <span id="label2" class="status-text">Chưa chọn ảnh</span>
+        <input type="file" id="fileImg2" accept="image/*">
+      </div>
+    </div>
+
+    <div class="options-row">
+      <div>
+        <label for="styleSelect" style="font-size: 14px; margin-right: 8px; color: #f9a8d4;">Phong cách Tình Yêu:</label>
+        <select id="styleSelect">
+          <option value="duo-cards">Cặp Thẻ Bài Tình Nhân (Love Duo Cards)</option>
+          <option value="heart-center">Trái Tim Lồng Ghép (Sweet Heart)</option>
+          <option value="blended-split">Giao Thoa Tình Cảm (Romantic Blend)</option>
+        </select>
+      </div>
+
+      <button class="btn-download" id="downloadBtn">⬇️ Tải Ảnh Tình Yêu</button>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="mainCanvas" width="1280" height="720"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let img1 = null;
+    let img2 = null;
+
+    const fileImg1 = document.getElementById('fileImg1');
+    const fileImg2 = document.getElementById('fileImg2');
+    const styleSelect = document.getElementById('styleSelect');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    fileImg1.addEventListener('change', (e) => handleFile(e.target.files[0], 1));
+    fileImg2.addEventListener('change', (e) => handleFile(e.target.files[0], 2));
+    styleSelect.addEventListener('change', render);
+
+    function handleFile(file, index) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const image = new Image();
+        image.onload = () => {
+          if (index === 1) {
+            img1 = image;
+            document.getElementById('label1').textContent = '✅ Đã tải ảnh 1';
+          } else {
+            img2 = image;
+            document.getElementById('label2').textContent = '✅ Đã tải ảnh 2';
+          }
+          render();
+        };
+        image.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Hiệu ứng hạt bụi sao & lấp lánh (Sparkles)
+    function drawRomanticBackground() {
+      // Vẽ nền mờ hòa trộn từ cả 2 ảnh nếu có
+      if (img1 || img2) {
+        ctx.save();
+        ctx.filter = "blur(25px) brightness(0.35) saturate(1.4)";
+        if (img1) ctx.drawImage(img1, -20, -20, canvas.width / 2 + 40, canvas.height + 40);
+        if (img2) ctx.drawImage(img2, canvas.width / 2 - 20, -20, canvas.width / 2 + 40, canvas.height + 40);
+        ctx.restore();
+      } else {
+        const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        bgGrad.addColorStop(0, "#1f0c27");
+        bgGrad.addColorStop(1, "#0d0412");
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      // Lớp phủ Gradient Tím Hồng
+      const overlay = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 100, canvas.width / 2, canvas.height / 2, 700);
+      overlay.addColorStop(0, "rgba(236, 72, 153, 0.2)");
+      overlay.addColorStop(1, "rgba(10, 3, 14, 0.8)");
+      ctx.fillStyle = overlay;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Vẽ các đốm sáng lấp lánh bokeh tình yêu
+      for (let i = 0; i < 40; i++) {
+        const x = (i * 37) % canvas.width;
+        const y = (i * 59) % canvas.height;
+        const radius = (i % 4) + 1.5;
+        ctx.fillStyle = "rgba(255, 182, 193, 0.4)";
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (!img1 && !img2) {
+        drawRomanticBackground();
+        ctx.fillStyle = "#f472b6";
+        ctx.font = "24px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("💖 Vui lòng tải lên 2 ảnh cặp đôi ở trên 💖", canvas.width / 2, canvas.height / 2);
+        return;
+      }
+
+      drawRomanticBackground();
+
+      const style = styleSelect.value;
+      if (style === 'duo-cards') {
+        renderDuoCards();
+      } else if (style === 'heart-center') {
+        renderHeartCenter();
+      } else if (style === 'blended-split') {
+        renderRomanticBlend();
+      }
+    }
+
+    // Kiểu 1: Cặp 2 thẻ bài hơi nghiêng hướng vào nhau, có biểu tượng trái tim kết nối
+    function renderDuoCards() {
+      const cardW = 360;
+      const cardH = 500;
+      const centerY = canvas.height / 2;
+
+      // Card 1 (Nam - hơi nghiêng phải)
+      if (img1) {
+        ctx.save();
+        ctx.translate(canvas.width / 2 - 210, centerY);
+        ctx.rotate(0.05);
+
+        ctx.shadowColor = "#38bdf8"; // Xanh neon nhẹ cho bạn nam
+        ctx.shadowBlur = 25;
+        ctx.strokeStyle = "#60a5fa";
+        ctx.lineWidth = 5;
+        ctx.strokeRect(-cardW / 2, -cardH / 2, cardW, cardH);
+
+        ctx.beginPath();
+        ctx.rect(-cardW / 2, -cardH / 2, cardW, cardH);
+        ctx.clip();
+        ctx.drawImage(img1, -cardW / 2, -cardH / 2, cardW, cardH);
+        ctx.restore();
+      }
+
+      // Card 2 (Nữ - hơi nghiêng trái)
+      if (img2) {
+        ctx.save();
+        ctx.translate(canvas.width / 2 + 210, centerY);
+        ctx.rotate(-0.05);
+
+        ctx.shadowColor = "#f43f5e"; // Hồng neon rực rỡ cho bạn nữ
+        ctx.shadowBlur = 25;
+        ctx.strokeStyle = "#fb7185";
+        ctx.lineWidth = 5;
+        ctx.strokeRect(-cardW / 2, -cardH / 2, cardW, cardH);
+
+        ctx.beginPath();
+        ctx.rect(-cardW / 2, -cardH / 2, cardW, cardH);
+        ctx.clip();
+        ctx.drawImage(img2, -cardW / 2, -cardH / 2, cardW, cardH);
+        ctx.restore();
+      }
+
+      // Biểu tượng trái tim phát sáng ở giữa nối 2 khung
+      ctx.save();
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "60px sans-serif";
+      ctx.shadowColor = "#ff69b4";
+      ctx.shadowBlur = 30;
+      ctx.fillText("💖", canvas.width / 2, centerY);
+      ctx.restore();
+    }
+
+    // Kiểu 2: Ghép vào hình Trái Tim nghệ thuật ở giữa
+    function renderHeartCenter() {
+      const size = 520;
+      const x = canvas.width / 2;
+      const y = canvas.height / 2 + 20;
+
+      function drawHeartPath(scale) {
+        ctx.beginPath();
+        ctx.moveTo(x, y + 120 * scale);
+        ctx.bezierCurveTo(x - 280 * scale, y - 100 * scale, x - 260 * scale, y - 280 * scale, x, y - 160 * scale);
+        ctx.bezierCurveTo(x + 260 * scale, y - 280 * scale, x + 280 * scale, y - 100 * scale, x, y + 120 * scale);
+        ctx.closePath();
+      }
+
+      // Viền phát sáng trái tim
+      ctx.save();
+      ctx.shadowColor = "#ff69b4";
+      ctx.shadowBlur = 35;
+      ctx.strokeStyle = "#ffb6c1";
+      ctx.lineWidth = 6;
+      drawHeartPath(1);
+      ctx.stroke();
+      ctx.restore();
+
+      // Cắt hình trái tim và đổ 2 ảnh vào 2 nửa
+      ctx.save();
+      drawHeartPath(1);
+      ctx.clip();
+
+      // Nửa trái: Ảnh 1
+      if (img1) {
+        ctx.drawImage(img1, x - 300, y - 300, 300, 500);
+      }
+      // Nửa phải: Ảnh 2
+      if (img2) {
+        ctx.drawImage(img2, x, y - 300, 300, 500);
+      }
+
+      // Đường ánh sáng phân cách ở giữa trái tim
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x, y - 160);
+      ctx.lineTo(x, y + 120);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // Kiểu 3: Hòa trộn nghệ thuật 2 bên (Romantic Blend)
+    function renderRomanticBlend() {
+      const half = canvas.width / 2;
+
+      // Bên trái (Ảnh 1)
+      if (img1) {
+        ctx.drawImage(img1, 0, 0, half, canvas.height);
+      }
+
+      // Bên phải (Ảnh 2)
+      if (img2) {
+        ctx.drawImage(img2, half, 0, half, canvas.height);
+      }
+
+      // Dải gradient lụa hồng mờ ở giữa để chuyển tiếp mượt mà
+      const blendGrad = ctx.createLinearGradient(half - 120, 0, half + 120, 0);
+      blendGrad.addColorStop(0, "rgba(236, 72, 153, 0)");
+      blendGrad.addColorStop(0.5, "rgba(236, 72, 153, 0.65)");
+      blendGrad.addColorStop(1, "rgba(236, 72, 153, 0)");
+      ctx.fillStyle = blendGrad;
+      ctx.fillRect(half - 120, 0, 240, canvas.height);
+
+      // Chữ Love / Tri Kỷ ở giữa dải lụa
+      ctx.save();
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "italic bold 36px 'Segoe UI', sans-serif";
+      ctx.textAlign = "center";
+      ctx.shadowColor = "#ec4899";
+      ctx.shadowBlur = 15;
+      ctx.fillText("FOREVER LOVE", half, canvas.height / 2);
+      ctx.restore();
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'lienquan-couple-love.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    render();
+  </script>
+</body>
+</html>
