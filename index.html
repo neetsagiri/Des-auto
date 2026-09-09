@@ -3,382 +3,406 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Auto Des Liên Quân - Cặp Đôi Tình Yêu</title>
+  <title>AOV Dimension Breaker - Auto Des Card Đôi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;0,900;1,900&family=Teko:wght@700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at top, #23112a 0%, #0d0711 100%);
-      color: #fce7f3;
-      padding: 30px 15px;
+      font-family: 'Montserrat', sans-serif;
+      background: #090611;
+      color: #e2e8f0;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
     }
     h1 {
-      color: #ff69b4;
-      text-transform: uppercase;
+      font-family: 'Teko', sans-serif;
+      font-size: 32px;
       letter-spacing: 2px;
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+      background: linear-gradient(135deg, #e9d5ff, #c084fc, #9333ea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       text-align: center;
+      margin-bottom: 15px;
     }
-    .container {
+    .panel {
       width: 100%;
-      max-width: 900px;
-      background: rgba(36, 17, 43, 0.7);
-      backdrop-filter: blur(10px);
-      border: 1px solid #57205e;
+      max-width: 600px;
+      background: rgba(23, 15, 38, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.4);
       border-radius: 16px;
-      padding: 25px;
-      box-shadow: 0 10px 40px rgba(255, 105, 180, 0.15);
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      margin-bottom: 20px;
     }
-    .upload-grid {
+    .upload-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
-    .upload-box {
-      background: rgba(22, 10, 27, 0.6);
-      border: 2px dashed #a855f7;
-      border-radius: 12px;
-      padding: 20px;
+    .upload-btn {
+      background: #1f1430;
+      border: 1.5px dashed #a855f7;
+      border-radius: 10px;
+      padding: 12px 8px;
       text-align: center;
       cursor: pointer;
-      transition: 0.3s;
-    }
-    .upload-box:hover {
-      border-color: #ff69b4;
-      box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
-    }
-    .upload-box input { display: none; }
-    .upload-box label { cursor: pointer; display: block; font-weight: bold; color: #f472b6; font-size: 15px; }
-    .status-text { font-size: 13px; color: #f9a8d4; margin-top: 8px; }
-
-    .options-row {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    select, button {
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 14px;
-      border: none;
-      outline: none;
-    }
-    select {
-      background: #3b1446;
-      color: #fdf2f8;
-      border: 1px solid #7c2d8c;
-    }
-    button.btn-download {
-      background: linear-gradient(135deg, #ff69b4, #ec4899, #a855f7);
-      color: #fff;
+      font-size: 13px;
       font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
-      transition: 0.2s;
+      color: #d8b4fe;
     }
-    button.btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(236, 72, 153, 0.6); }
+    .upload-btn input { display: none; }
+    .status { font-size: 11px; color: #a855f7; display: block; margin-top: 4px; }
 
-    .canvas-wrapper {
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    input {
       width: 100%;
-      text-align: center;
-      border-radius: 12px;
+      padding: 8px 10px;
+      background: #120920;
+      border: 1px solid #6b21a8;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+    }
+    input:focus { border-color: #c084fc; outline: none; }
+
+    .btn-download {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #9333ea, #c084fc);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 14px;
+      letter-spacing: 1px;
+      box-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+    }
+    .preview-box {
+      width: 100%;
+      max-width: 420px; /* Khung xem trước dạng điện thoại */
       background: #000;
-      padding: 10px;
+      border-radius: 12px;
       overflow: hidden;
+      border: 2px solid #581c87;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
     }
     canvas {
-      max-width: 100%;
+      display: block;
+      width: 100%;
       height: auto;
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
     }
   </style>
 </head>
 <body>
 
-  <h1>💖 Auto Des Liên Quân - Cặp Đôi Tình Yêu 💖</h1>
+  <h1>DIMENSION BREAKER EDIT STUDIO</h1>
 
-  <div class="container">
-    <div class="upload-grid">
-      <div class="upload-box" onclick="document.getElementById('fileImg1').click()">
-        <label>🤴 Ảnh Bạn Nam / Tướng Nam (hoặc Nền)</label>
-        <span id="label1" class="status-text">Chưa chọn ảnh</span>
-        <input type="file" id="fileImg1" accept="image/*">
-      </div>
-
-      <div class="upload-box" onclick="document.getElementById('fileImg2').click()">
-        <label>👸 Ảnh Bạn Nữ / Tướng Nữ</label>
-        <span id="label2" class="status-text">Chưa chọn ảnh</span>
-        <input type="file" id="fileImg2" accept="image/*">
-      </div>
+  <div class="panel">
+    <div class="upload-row">
+      <label class="upload-btn">
+        <span>ẢNH 1 (TƯỚNG TRÊN / TRÁI)</span>
+        <span id="st1" class="status">Chưa chọn ảnh</span>
+        <input type="file" id="f1" accept="image/*">
+      </label>
+      <label class="upload-btn">
+        <span>ẢNH 2 (TƯỚNG DƯỚI / PHẢI)</span>
+        <span id="st2" class="status">Chưa chọn ảnh</span>
+        <input type="file" id="f2" accept="image/*">
+      </label>
     </div>
 
-    <div class="options-row">
-      <div>
-        <label for="styleSelect" style="font-size: 14px; margin-right: 8px; color: #f9a8d4;">Phong cách Tình Yêu:</label>
-        <select id="styleSelect">
-          <option value="duo-cards">Cặp Thẻ Bài Tình Nhân (Love Duo Cards)</option>
-          <option value="heart-center">Trái Tim Lồng Ghép (Sweet Heart)</option>
-          <option value="blended-split">Giao Thoa Tình Cảm (Romantic Blend)</option>
-        </select>
-      </div>
-
-      <button class="btn-download" id="downloadBtn">⬇️ Tải Ảnh Tình Yêu</button>
+    <div class="input-grid">
+      <input type="text" id="skin1" value="Thứ nguyên vệ thần" placeholder="Skin 1">
+      <input type="text" id="skin2" value="Thứ nguyên vệ thần" placeholder="Skin 2">
+      <input type="text" id="hero1" value="Tel'Annas" placeholder="Tên tướng 1">
+      <input type="text" id="hero2" value="Violet" placeholder="Tên tướng 2">
+      <input type="text" id="name1" value="ThuỷThầnTinhVân" placeholder="Ingame 1">
+      <input type="text" id="name2" value="rt4Eunsung." placeholder="Ingame 2">
     </div>
 
-    <div class="canvas-wrapper">
-      <canvas id="mainCanvas" width="1280" height="720"></canvas>
-    </div>
+    <button class="btn-download" id="btnDl">⬇️ TẢI ẢNH FULL HD (9:16)</button>
+  </div>
+
+  <div class="preview-box">
+    <!-- Khổ chuẩn Story/TikTok 1080 x 1920 -->
+    <canvas id="canvas" width="1080" height="1920"></canvas>
   </div>
 
   <script>
-    const canvas = document.getElementById('mainCanvas');
+    const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
 
     let img1 = null;
     let img2 = null;
 
-    const fileImg1 = document.getElementById('fileImg1');
-    const fileImg2 = document.getElementById('fileImg2');
-    const styleSelect = document.getElementById('styleSelect');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const f1 = document.getElementById('f1');
+    const f2 = document.getElementById('f2');
+    const st1 = document.getElementById('st1');
+    const st2 = document.getElementById('st2');
+    const btnDl = document.getElementById('btnDl');
 
-    fileImg1.addEventListener('change', (e) => handleFile(e.target.files[0], 1));
-    fileImg2.addEventListener('change', (e) => handleFile(e.target.files[0], 2));
-    styleSelect.addEventListener('change', render);
+    const inputs = ['skin1', 'skin2', 'hero1', 'hero2', 'name1', 'name2'];
+    inputs.forEach(id => document.getElementById(id).addEventListener('input', render));
 
-    function handleFile(file, index) {
+    f1.addEventListener('change', (e) => load(e.target.files[0], 1));
+    f2.addEventListener('change', (e) => load(e.target.files[0], 2));
+
+    function load(file, idx) {
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const image = new Image();
-        image.onload = () => {
-          if (index === 1) {
-            img1 = image;
-            document.getElementById('label1').textContent = '✅ Đã tải ảnh 1';
-          } else {
-            img2 = image;
-            document.getElementById('label2').textContent = '✅ Đã tải ảnh 2';
-          }
+      const r = new FileReader();
+      r.onload = (e) => {
+        const im = new Image();
+        im.onload = () => {
+          if (idx === 1) { img1 = im; st1.innerText = "✅ Đã nhận ảnh 1"; }
+          else { img2 = im; st2.innerText = "✅ Đã nhận ảnh 2"; }
           render();
         };
-        image.src = event.target.result;
+        im.src = e.target.result;
       };
-      reader.readAsDataURL(file);
-    }
-
-    // Hiệu ứng hạt bụi sao & lấp lánh (Sparkles)
-    function drawRomanticBackground() {
-      // Vẽ nền mờ hòa trộn từ cả 2 ảnh nếu có
-      if (img1 || img2) {
-        ctx.save();
-        ctx.filter = "blur(25px) brightness(0.35) saturate(1.4)";
-        if (img1) ctx.drawImage(img1, -20, -20, canvas.width / 2 + 40, canvas.height + 40);
-        if (img2) ctx.drawImage(img2, canvas.width / 2 - 20, -20, canvas.width / 2 + 40, canvas.height + 40);
-        ctx.restore();
-      } else {
-        const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        bgGrad.addColorStop(0, "#1f0c27");
-        bgGrad.addColorStop(1, "#0d0412");
-        ctx.fillStyle = bgGrad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-
-      // Lớp phủ Gradient Tím Hồng
-      const overlay = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 100, canvas.width / 2, canvas.height / 2, 700);
-      overlay.addColorStop(0, "rgba(236, 72, 153, 0.2)");
-      overlay.addColorStop(1, "rgba(10, 3, 14, 0.8)");
-      ctx.fillStyle = overlay;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Vẽ các đốm sáng lấp lánh bokeh tình yêu
-      for (let i = 0; i < 40; i++) {
-        const x = (i * 37) % canvas.width;
-        const y = (i * 59) % canvas.height;
-        const radius = (i % 4) + 1.5;
-        ctx.fillStyle = "rgba(255, 182, 193, 0.4)";
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      r.readAsDataURL(file);
     }
 
     function render() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (!img1 && !img2) {
-        drawRomanticBackground();
-        ctx.fillStyle = "#f472b6";
-        ctx.font = "24px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText("💖 Vui lòng tải lên 2 ảnh cặp đôi ở trên 💖", canvas.width / 2, canvas.height / 2);
-        return;
-      }
+      // 1. VẼ NỀN ANIME TÍM LỚN (TRÊN & DƯỚI)
+      drawAnimeBackground();
 
-      drawRomanticBackground();
+      // 2. VẼ CÁC CHỮ CHẠY XIÊN GLITCH PHÔNG NỀN (DIMENSION BREAKER)
+      drawGlitchTextBackground();
 
-      const style = styleSelect.value;
-      if (style === 'duo-cards') {
-        renderDuoCards();
-      } else if (style === 'heart-center') {
-        renderHeartCenter();
-      } else if (style === 'blended-split') {
-        renderRomanticBlend();
-      }
+      // 3. VẼ CÁC THẺ CARD ẢO NGHIÊNG XẾP LỚP Ở SAU (GHOST/ECHO CARDS)
+      drawBackGhostCards();
+
+      // 4. VẼ 2 THẺ CARD CHÍNH Ở TRUNG TÂM (ĐỐI XỨNG 3D TILT)
+      drawMainPairCards();
+
+      // 5. PHỦ LỚP MÀU ÁNH TÍM ANIME VÀ BỤI SÁNG
+      drawAuraGlitchEffect();
     }
 
-    // Kiểu 1: Cặp 2 thẻ bài hơi nghiêng hướng vào nhau, có biểu tượng trái tim kết nối
-    function renderDuoCards() {
-      const cardW = 360;
-      const cardH = 500;
-      const centerY = canvas.height / 2;
+    function drawAnimeBackground() {
+      ctx.fillStyle = "#0c0618";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Card 1 (Nam - hơi nghiêng phải)
-      if (img1) {
+      // Ảnh góc trên (Phóng to, hơi xoay nhẹ)
+      if (img2 || img1) {
         ctx.save();
-        ctx.translate(canvas.width / 2 - 210, centerY);
-        ctx.rotate(0.05);
-
-        ctx.shadowColor = "#38bdf8"; // Xanh neon nhẹ cho bạn nam
-        ctx.shadowBlur = 25;
-        ctx.strokeStyle = "#60a5fa";
-        ctx.lineWidth = 5;
-        ctx.strokeRect(-cardW / 2, -cardH / 2, cardW, cardH);
-
-        ctx.beginPath();
-        ctx.rect(-cardW / 2, -cardH / 2, cardW, cardH);
-        ctx.clip();
-        ctx.drawImage(img1, -cardW / 2, -cardH / 2, cardW, cardH);
+        ctx.translate(canvas.width / 2, 250);
+        ctx.rotate(-0.08);
+        ctx.filter = "contrast(1.2) brightness(0.65) saturate(1.4)";
+        const bgImgTop = img2 || img1;
+        ctx.drawImage(bgImgTop, -750, -450, 1500, 900);
         ctx.restore();
       }
 
-      // Card 2 (Nữ - hơi nghiêng trái)
-      if (img2) {
+      // Ảnh góc dưới (Phóng to, xoay nghiêng đối ứng)
+      if (img1 || img2) {
         ctx.save();
-        ctx.translate(canvas.width / 2 + 210, centerY);
-        ctx.rotate(-0.05);
-
-        ctx.shadowColor = "#f43f5e"; // Hồng neon rực rỡ cho bạn nữ
-        ctx.shadowBlur = 25;
-        ctx.strokeStyle = "#fb7185";
-        ctx.lineWidth = 5;
-        ctx.strokeRect(-cardW / 2, -cardH / 2, cardW, cardH);
-
-        ctx.beginPath();
-        ctx.rect(-cardW / 2, -cardH / 2, cardW, cardH);
-        ctx.clip();
-        ctx.drawImage(img2, -cardW / 2, -cardH / 2, cardW, cardH);
+        ctx.translate(canvas.width / 2, 1680);
+        ctx.rotate(0.06);
+        ctx.filter = "contrast(1.25) brightness(0.7) saturate(1.4)";
+        const bgImgBtm = img1 || img2;
+        ctx.drawImage(bgImgBtm, -750, -450, 1500, 900);
         ctx.restore();
       }
 
-      // Biểu tượng trái tim phát sáng ở giữa nối 2 khung
+      // Lớp phủ Gradient Tím Đen giữa màn hình
+      const midGrad = ctx.createLinearGradient(0, 450, 0, 1450);
+      midGrad.addColorStop(0, "rgba(12, 6, 24, 0.4)");
+      midGrad.addColorStop(0.5, "rgba(35, 10, 65, 0.85)");
+      midGrad.addColorStop(1, "rgba(12, 6, 24, 0.4)");
+      ctx.fillStyle = midGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawGlitchTextBackground() {
       ctx.save();
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.font = "60px sans-serif";
-      ctx.shadowColor = "#ff69b4";
-      ctx.shadowBlur = 30;
-      ctx.fillText("💖", canvas.width / 2, centerY);
+      ctx.rotate(-0.35);
+      ctx.font = "italic 900 65px 'Montserrat'";
+      ctx.fillStyle = "rgba(192, 132, 252, 0.15)";
+
+      for (let y = -400; y < 2400; y += 180) {
+        ctx.fillText("DIMENSION BREAKER • THỨ NGUYÊN VỆ THẦN • AOV", -500, y);
+      }
       ctx.restore();
     }
 
-    // Kiểu 2: Ghép vào hình Trái Tim nghệ thuật ở giữa
-    function renderHeartCenter() {
-      const size = 520;
-      const x = canvas.width / 2;
-      const y = canvas.height / 2 + 20;
+    function drawBackGhostCards() {
+      // Các thẻ mờ tạo chiều sâu chuyển động phía sau thẻ chính
+      drawCardShape(-0.25, 300, 720, 360, 640, img1, 0.3, true);
+      drawCardShape(0.28, 800, 1050, 360, 640, img2, 0.35, true);
+      drawCardShape(-0.15, 680, 620, 360, 640, img2, 0.25, true);
+    }
 
-      function drawHeartPath(scale) {
-        ctx.beginPath();
-        ctx.moveTo(x, y + 120 * scale);
-        ctx.bezierCurveTo(x - 280 * scale, y - 100 * scale, x - 260 * scale, y - 280 * scale, x, y - 160 * scale);
-        ctx.bezierCurveTo(x + 260 * scale, y - 280 * scale, x + 280 * scale, y - 100 * scale, x, y + 120 * scale);
-        ctx.closePath();
-      }
+    function drawMainPairCards() {
+      const cardW = 440;
+      const cardH = 760;
 
-      // Viền phát sáng trái tim
+      // THẺ CHÍNH PHẢI (VIOLET / THÀNH VIÊN 2) - NẰM LỚP DƯỚI MỘT CHÚT
+      drawCardShape(
+        0.18, 680, 880, cardW, cardH, img2, 1.0, false,
+        document.getElementById('skin2').value,
+        document.getElementById('hero2').value,
+        document.getElementById('name2').value,
+        "#d8b4fe"
+      );
+
+      // THẺ CHÍNH TRÁI (TEL'ANNAS / THÀNH VIÊN 1) - ĐÈ LÊN TRÊN
+      drawCardShape(
+        -0.16, 400, 960, cardW, cardH, img1, 1.0, false,
+        document.getElementById('skin1').value,
+        document.getElementById('hero1').value,
+        document.getElementById('name1').value,
+        "#c084fc"
+      );
+    }
+
+    // HÀM VẼ KHUNG THẺ CHUẨN LIÊN QUÂN MOBILE
+    function drawCardShape(rot, cx, cy, w, h, img, alpha, isGhost, skinText, heroText, ingameText, glowCol) {
       ctx.save();
-      ctx.shadowColor = "#ff69b4";
-      ctx.shadowBlur = 35;
-      ctx.strokeStyle = "#ffb6c1";
+      ctx.translate(cx, cy);
+      ctx.rotate(rot);
+      ctx.globalAlpha = alpha;
+
+      // Bóng đổ 3D sâu
+      ctx.shadowColor = glowCol || "rgba(0,0,0,0.9)";
+      ctx.shadowBlur = isGhost ? 15 : 45;
+      ctx.shadowOffsetX = isGhost ? 5 : 12;
+      ctx.shadowOffsetY = isGhost ? 5 : 20;
+
+      // 1. Viền ngoài thẻ mạ kim loại bạc - tím
+      ctx.strokeStyle = "#e9d5ff";
       ctx.lineWidth = 6;
-      drawHeartPath(1);
-      ctx.stroke();
-      ctx.restore();
+      ctx.strokeRect(-w/2, -h/2, w, h);
 
-      // Cắt hình trái tim và đổ 2 ảnh vào 2 nửa
+      // Viền kép neon phụ
+      ctx.strokeStyle = "#a855f7";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(-w/2 + 6, -h/2 + 6, w - 12, h - 12);
+
+      // 2. Vẽ hình ảnh bên trong
       ctx.save();
-      drawHeartPath(1);
+      ctx.beginPath();
+      ctx.rect(-w/2 + 6, -h/2 + 6, w - 12, h - 12);
       ctx.clip();
 
-      // Nửa trái: Ảnh 1
-      if (img1) {
-        ctx.drawImage(img1, x - 300, y - 300, 300, 500);
-      }
-      // Nửa phải: Ảnh 2
-      if (img2) {
-        ctx.drawImage(img2, x, y - 300, 300, 500);
+      if (img) {
+        // Tỉ lệ cover vừa khít thẻ
+        const ratio = Math.max((w - 12) / img.width, (h - 12) / img.height);
+        const sx = ((w - 12) - img.width * ratio) / 2;
+        const sy = ((h - 12) - img.height * ratio) / 2;
+        ctx.drawImage(img, 0, 0, img.width, img.height,
+                      -w/2 + 6 + sx, -h/2 + 6 + sy, img.width * ratio, img.height * ratio);
+      } else {
+        ctx.fillStyle = "#1e1133";
+        ctx.fillRect(-w/2, -h/2, w, h);
+        ctx.fillStyle = "#a855f7";
+        ctx.font = "bold 26px Montserrat";
+        ctx.textAlign = "center";
+        ctx.fillText("CHỌN ẢNH", 0, 0);
       }
 
-      // Đường ánh sáng phân cách ở giữa trái tim
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(x, y - 160);
-      ctx.lineTo(x, y + 120);
-      ctx.stroke();
+      // Lớp gradient tối bên dưới để đọc chữ UI Game
+      if (!isGhost) {
+        const cardShade = ctx.createLinearGradient(0, h/2 - 320, 0, h/2);
+        cardShade.addColorStop(0, "rgba(0,0,0,0)");
+        cardShade.addColorStop(0.5, "rgba(10, 4, 20, 0.7)");
+        cardShade.addColorStop(1, "rgba(10, 4, 20, 0.95)");
+        ctx.fillStyle = cardShade;
+        ctx.fillRect(-w/2, h/2 - 320, w, 320);
+      }
+
+      ctx.restore();
+
+      // NẾU LÀ THẺ CHÍNH -> VẼ CÁC HUY HIỆU & THÔNG SỐ UI GAME
+      if (!isGhost) {
+        // Vương miện / Badge đỉnh thẻ
+        ctx.fillStyle = "#ffd700";
+        ctx.shadowColor = "#f59e0b";
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.arc(0, -h/2 + 10, 18, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.font = "bold 14px Montserrat";
+        ctx.textAlign = "center";
+        ctx.fillText("SSS", 0, -h/2 + 15);
+
+        // Logo Thần Vệ / Tag Skin
+        ctx.fillStyle = "rgba(233, 213, 255, 0.95)";
+        ctx.font = "italic 900 16px 'Montserrat'";
+        ctx.shadowColor = "#9333ea";
+        ctx.shadowBlur = 10;
+        ctx.fillText("DIMENSION BREAKER", 0, h/2 - 185);
+
+        // Tên Skin
+        ctx.fillStyle = "#f3e8ff";
+        ctx.font = "italic 600 21px 'Montserrat'";
+        ctx.fillText(skinText || "Thứ nguyên vệ thần", 0, h/2 - 150);
+
+        // Tên Tướng
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 28px 'Montserrat'";
+        ctx.shadowColor = "#000";
+        ctx.shadowBlur = 8;
+        ctx.fillText(heroText || "Tên Tướng", 0, h/2 - 110);
+
+        // Dải Ingame Player
+        ctx.fillStyle = "#d8b4fe";
+        ctx.font = "bold 23px 'Montserrat'";
+        ctx.fillText(ingameText || "Tên Ingame", 0, h/2 - 65);
+
+        // Huy hiệu Thông Thạo S (Cấp 15) ở đáy thẻ
+        ctx.fillStyle = "#7e22ce";
+        ctx.strokeStyle = "#e9d5ff";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, h/2 - 20, 18, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 13px Montserrat";
+        ctx.fillText("15", 0, h/2 - 15);
+      }
 
       ctx.restore();
     }
 
-    // Kiểu 3: Hòa trộn nghệ thuật 2 bên (Romantic Blend)
-    function renderRomanticBlend() {
-      const half = canvas.width / 2;
-
-      // Bên trái (Ảnh 1)
-      if (img1) {
-        ctx.drawImage(img1, 0, 0, half, canvas.height);
-      }
-
-      // Bên phải (Ảnh 2)
-      if (img2) {
-        ctx.drawImage(img2, half, 0, half, canvas.height);
-      }
-
-      // Dải gradient lụa hồng mờ ở giữa để chuyển tiếp mượt mà
-      const blendGrad = ctx.createLinearGradient(half - 120, 0, half + 120, 0);
-      blendGrad.addColorStop(0, "rgba(236, 72, 153, 0)");
-      blendGrad.addColorStop(0.5, "rgba(236, 72, 153, 0.65)");
-      blendGrad.addColorStop(1, "rgba(236, 72, 153, 0)");
-      ctx.fillStyle = blendGrad;
-      ctx.fillRect(half - 120, 0, 240, canvas.height);
-
-      // Chữ Love / Tri Kỷ ở giữa dải lụa
+    function drawAuraGlitchEffect() {
       ctx.save();
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "italic bold 36px 'Segoe UI', sans-serif";
-      ctx.textAlign = "center";
-      ctx.shadowColor = "#ec4899";
-      ctx.shadowBlur = 15;
-      ctx.fillText("FOREVER LOVE", half, canvas.height / 2);
+      // Ánh sáng tím bao trùm (Vignette)
+      const glow = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 400, canvas.width/2, canvas.height/2, 1100);
+      glow.addColorStop(0, "rgba(147, 51, 234, 0.0)");
+      glow.addColorStop(1, "rgba(8, 3, 15, 0.75)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Các tia sáng lấp lánh chéo
+      ctx.strokeStyle = "rgba(233, 213, 255, 0.35)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(100, 1500);
+      ctx.lineTo(950, 1620);
+      ctx.stroke();
       ctx.restore();
     }
 
-    downloadBtn.addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.download = 'lienquan-couple-love.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+    btnDl.addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.download = `AOV-DimensionBreaker-${Date.now()}.png`;
+      a.href = canvas.toDataURL('image/png', 1.0);
+      a.click();
     });
 
     render();
